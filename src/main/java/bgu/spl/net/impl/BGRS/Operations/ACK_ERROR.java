@@ -7,6 +7,7 @@ public class ACK_ERROR implements Operation {
     private String SubjectOpCode;
     private String info;
 
+
     public String OperationType() {
         return operationType;
     }
@@ -21,5 +22,13 @@ public class ACK_ERROR implements Operation {
 
     public void setSubjectOpCode(String subjectOpCode) {
         SubjectOpCode = subjectOpCode;
+    }
+
+    public String getSubjectOpCode() {
+        return SubjectOpCode;
+    }
+
+    public String getInfo() {
+        return info;
     }
 }

@@ -86,7 +86,8 @@ public class BGRS_EncoderDecoder implements MessageEncoderDecoder<Operation> {
 
     @Override
     public byte[] encode(Operation message) {
-        return new byte[0];
+        //TODO should it first encode and then concatenate?
+        return (((ACK_ERROR) message).getSubjectOpCode() + ((ACK_ERROR) message).getInfo()).getBytes(); //uses UTF-8 by default
     }
 
     private void pushByte(byte nextByte) {
