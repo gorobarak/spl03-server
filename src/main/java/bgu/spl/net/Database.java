@@ -1,4 +1,4 @@
-
+package bgu.spl.net;
 
 
 /**
@@ -11,7 +11,9 @@
  */
 public class Database {
 
-
+	private static class InstanceHolder{
+		private static Database instance = new Database();
+	}
 	//to prevent user from creating new Database
 	private Database() {
 		// TODO: implement
@@ -21,7 +23,7 @@ public class Database {
 	 * Retrieves the single instance of this class.
 	 */
 	public static Database getInstance() {
-		return singleton;
+		return InstanceHolder.instance;
 	}
 	
 	/**
