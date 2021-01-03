@@ -7,6 +7,11 @@ public class ACK_ERROR implements Operation {
     private String SubjectOpCode;
     private String info;
 
+    public ACK_ERROR(boolean isAck, String subjectOpCode, String info) {
+        this.operationType = (isAck) ? "12" : "13";
+        this.SubjectOpCode = subjectOpCode;
+        this.info = info;
+    }
 
     public String OperationType() {
         return operationType;
