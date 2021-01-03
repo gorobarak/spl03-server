@@ -25,37 +25,26 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
         switch (operationType){
             case "ADMINREG":
                 return adminreg(msg);
-                break;
             case "STUDENTREG":
                 return studentreg(msg);
-                break;
             case "LOGIN":
                 return login(msg);
-                break;
             case "LOGOUT":
                 return logout(msg);
-                break;
             case "COURSEREG":
                 return coursereg(msg);
-                break;
             case "KDAMCHECK":
                 return kdamcheck(msg);
-                break;
             case "COURSESTAT":
                 return coursestat(msg);
-                break;
             case "STUDENTSTAT":
                 return studentstat(msg);
-                break;
             case "ISREGISTERED":
                 return isregistered(msg);
-                break;
             case "UNREGISTER":
                 return unregister(msg);
-                break;
-            case "MYCOURSES":
+            default://case "MYCOURSES":
                 return mycourses(msg);
-                break;
 
         }
     }
@@ -135,6 +124,7 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
         loginState = false;
         isAdmin = false;
         database.logout(username);
+        shouldTerminate = true;
         return new ACK_ERROR(true, "4", "");
     }
 
@@ -143,6 +133,7 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
      * errors:
      * not logged in
      * user is admin
+     * registerToCourse errors
      * @param msg
      * @return
      */

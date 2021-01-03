@@ -11,6 +11,7 @@ package bgu.spl.net;
  */
 public class Database {
 
+
 	/**
 	 * synchronized - only one writer at a time
 	 * @param username
@@ -77,7 +78,7 @@ public class Database {
 	}
 
 	/**
-	 * synchronized - only one writer at a time - doesn't have to be guarantied that only one client is logged in to a user
+	 *  doesn't have to be synchronised because it's guarantied that only one client is logged in to a user TODO validate that statement
 	 * errors:
 	 * no such course exist
 	 * already registered to the course
@@ -90,6 +91,11 @@ public class Database {
 	public boolean registerToCourse(String courseNum, String username) {
 	}
 
+	/**
+	 * doesn't have to be synchronised because it's guarantied that only one client is logged in to a user TODO validate that statement
+	 * @param courseNum
+	 * @param username
+	 */
 	public void unregisterFromCourse(String courseNum, String username) {
 	}
 
