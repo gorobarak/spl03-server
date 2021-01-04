@@ -1,12 +1,13 @@
 package bgu.spl.net.impl.BGRS;
 
-import java.util.Set;
+import java.util.List;
+
 
 public class userData {
     private String password;
     private boolean isAdmin;
     private boolean isLoggedIn = false;
-    private Set<String> courses; //TODO should it be ordered as was in courses.txt?
+    private List<String> courses; //TODO should it be ordered as was in courses.txt? - YES
 
 
     public userData(String password, boolean isAdmin){
@@ -19,7 +20,7 @@ public class userData {
         return password;
     }
 
-    public Set<String> getCourses() {
+    public List<String> getCourses() {
         return courses;
     }
 
@@ -31,8 +32,14 @@ public class userData {
         return isAdmin;
     }
 
-    public void setLoggedIn(boolean loggedIn) {
-        isLoggedIn = loggedIn;
+    public void login() {
+        isLoggedIn = true;
     }
+
+    public void logout() {
+        isLoggedIn = false;
+    }
+
+    public void
 }
 

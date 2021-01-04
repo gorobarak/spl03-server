@@ -160,13 +160,13 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
 
     /**
      * opcode 7
-     * errors:?
+     * errors:check if the course exists
      * @param msg
      * @return
      */
     private Operation coursestat(Operation msg) {
         String courseNum = ((Op_Course)msg).getCourse();
-        if (!loginState || !isAdmin) {
+        if (!loginState || !isAdmin || !database.isCourse(courseNum)) {
             return new ACK_ERROR(false, "7", "");
         }
         return new ACK_ERROR(true, "7", database.getCourseStat(courseNum));
@@ -174,14 +174,14 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
 
     /**
      * opcode 8
-     * errors: not logged in, not admin,
+     * errors: not logged in, not admin, student not registered
      * otherwise: register user
      * @param msg
      * @return
      */
     private Operation studentstat(Operation msg) {
         String studentName = ((Op_Username)msg).getUsername();
-        if (!isAdmin) {
+        if (!isAdmin || !database.isRegistered(studentName)) {
             return new ACK_ERROR(false, "8", "");
         }
         return new ACK_ERROR(true, "8", database.getStudentStat(studentName));
