@@ -26,3 +26,5 @@ spl-net.iml
 
 .idea
 Courses.txt
+src/main/java/bgu/spl/net/impl/BGRSServer/TesterOld
+target

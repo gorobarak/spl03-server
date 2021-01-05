@@ -40,6 +40,5 @@ public class userData {
         isLoggedIn = false;
     }
 
-    public void
 }
 

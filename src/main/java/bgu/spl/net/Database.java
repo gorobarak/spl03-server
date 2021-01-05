@@ -25,7 +25,7 @@ public class Database {
 	private final Object lockA = new Object();
 
 	public boolean isCourse(String courseNum) {
-		return courseToStudentsMap.containsKey(courseNum);
+		return courses.containsKey(courseNum);
 	}
 
 	private static class InstanceHolder{
@@ -37,8 +37,10 @@ public class Database {
 		users = new HashMap<>();
 		//studentToCoursesMap = new HashMap<>();
 		courseToStudentsMap = new HashMap<>();
+		order = new ArrayList<>();
 		initialize("Courses.txt");
-		sortKdams();
+		sortKdams();// kdams in courseData objects is sorted
+
 
 	}
 
@@ -52,6 +54,7 @@ public class Database {
 	 * Retrieves the single instance of this class.
 	 */
 	public static Database getInstance() {
+		System.out.println("getInstance()"); //TODO delete
 		return InstanceHolder.instance;
 	}
 
@@ -69,6 +72,7 @@ public class Database {
 				course = parseToCourse(myReader.nextLine());
 				courses.put(course.getCourseNum(),course);
 				order.add(course.getCourseNum());
+				courseToStudentsMap.put(course.getCourseName(),new ArrayList<>()); //initialize courses in map
 			}
 			myReader.close();
 
@@ -116,7 +120,9 @@ public class Database {
 	 * @return true iff successful
 	 */
 	public boolean registerStudent(String username, String password) {
+		System.out.println("outside registerStudent()");
 		synchronized (lockA) {
+			System.out.println("registerStudent()"); //TODO delete
 			if (!isRegistered(username)) {
 				userData u = new userData(password, false);
 				users.put(username, u);
