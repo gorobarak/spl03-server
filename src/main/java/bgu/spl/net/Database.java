@@ -201,6 +201,18 @@ public class Database {
 		}
 	}
 
+	private boolean hasKdams(String courseNum, String username) {
+		userData user = users.get(username);
+		courseData course = courses.get(courseNum);
+		for (String kdam : course.getKdams()) {
+			if (!user.getCourses().contains(kdam)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+
 	/**
 	 * Synchronized B - reading data that isn't fully changed
 	 * doesn't have to be synchronised because it's guarantied that only one client is logged in to a user TODO validate that statement
@@ -231,16 +243,6 @@ public class Database {
 		}
 	}
 
-	private boolean hasKdams(String courseNum, String username) {
-		userData user = users.get(username);
-		courseData course = courses.get(courseNum);
-		for (String kdam : course.getKdams()) {
-			if (!user.getCourses().contains(kdam)) {
-				return false;
-			}
-		}
-		return true;
-	}
 
 	/**
 	 * Synchronized B - reading data that isn't fully changed
@@ -250,8 +252,12 @@ public class Database {
 	public void unregisterFromCourse(String courseNum, String username) {
 		synchronized (users.get(username)) {
 			synchronized (courses.get(courseNum)) {
-
-
+				userData user = users.get(username);
+				courseData course = courses.get(courseNum);
+				user.getCourses().remove(courseNum);//remove the course from the student's courses
+				course.removeStudent(); //increase available slots
+				courseToStudentsMap.get(courseNum).remove(username); //remove the student from the list of registered students
+				//TODO is sort kept?
 			}
 		}
 	}

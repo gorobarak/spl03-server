@@ -26,6 +26,10 @@ public class courseData {
         availableSlots--;
     }
 
+    public void removeStudent() {
+        availableSlots++;
+    }
+
     public int getMaxSlots() {
         return maxSlots;
     }

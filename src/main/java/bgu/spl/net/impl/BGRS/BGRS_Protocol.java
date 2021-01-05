@@ -214,6 +214,7 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
         if (!loginState || isAdmin || database.isRegisteredToCourse(courseNum, username).equals("NOT REGISTERED")) {
             return new ACK_ERROR(false, "10", "");
         }
+        //TODO can the unregister be unsuccessful?
         database.unregisterFromCourse(courseNum, username);
         return new ACK_ERROR(true, "10", "");
 
