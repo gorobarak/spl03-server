@@ -72,7 +72,7 @@ public class Database {
 				course = parseToCourse(myReader.nextLine());
 				courses.put(course.getCourseNum(),course);
 				order.add(course.getCourseNum());
-				courseToStudentsMap.put(course.getCourseName(),new ArrayList<>()); //initialize courses in map
+				courseToStudentsMap.put(course.getCourseNum(),new ArrayList<>()); //initialize courses in map
 			}
 			myReader.close();
 
@@ -85,9 +85,14 @@ public class Database {
 	}
 
 	private courseData parseToCourse(String nextLine) {
-		String[] data = nextLine.split("\\|");
-		String[] pre_kdams = data[2].substring(1,data[2].length()-1).split(",");
-		List<String> kdams = new ArrayList<>(Arrays.asList(pre_kdams));
+		String[] data = nextLine.split("\\|"); //3|Algebra|[]|12 -> ["3","Algebra","[]","12"]
+		List<String> kdams;
+		if(data[2].equals("[]")){ //kdams are empty
+			kdams = new ArrayList<>();
+		}else {
+			String[] pre_kdams = data[2].substring(1, data[2].length() - 1).split(",");//"[]" = ('[',']')
+			kdams = new ArrayList<>(Arrays.asList(pre_kdams));
+		}
 		int available_max_slots = Integer.parseInt(data[3]);
 		String courseNum = data[0];
 		String courseName = data[1];
@@ -212,8 +217,11 @@ public class Database {
 	private boolean hasKdams(String courseNum, String username) {
 		userData user = users.get(username);
 		courseData course = courses.get(courseNum);
+		System.out.println("kdams = " + course.getKdams()); //todo delete
+		System.out.println("kdamsSize " + course.getKdams().size());
 		for (String kdam : course.getKdams()) {
 			if (!user.getCourses().contains(kdam)) {
+				System.out.println(kdam); //todo delete
 				return false;
 			}
 		}
@@ -225,7 +233,6 @@ public class Database {
 	 * Synchronized B - reading data that isn't fully changed
 	 * doesn't have to be synchronised because it's guarantied that only one client is logged in to a user TODO validate that statement
 	 * errors:
-	 * no such course exist
 	 * already registered to the course
 	 * no available slots
 	 * doesn't have all the kdams!!!
@@ -238,7 +245,10 @@ public class Database {
 			synchronized (courses.get(courseNum)) {
 				userData user = users.get(username);
 				courseData course = courses.get(courseNum);
-				if (course == null || user.getCourses().contains(courseNum) || course.getAvailableSlots() == 0 || !hasKdams(courseNum,username)) {
+				System.out.println("alreadyRegistered = " + user.getCourses().contains(courseNum)); //todo delete
+				System.out.println("availableSlots = " + course.getAvailableSlots());
+				System.out.println("hasKdmas = " + hasKdams(courseNum,username));
+				if (user.getCourses().contains(courseNum) || course.getAvailableSlots() == 0 || !hasKdams(courseNum,username)) {
 					return false;
 				}//else register student to course:
 				user.getCourses().add(courseNum);
