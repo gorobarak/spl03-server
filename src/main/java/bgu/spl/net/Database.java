@@ -22,7 +22,7 @@ public class Database {
 	private Map<String,userData> users; // username - userData
 	//private Map<String, List<String>> studentToCoursesMap; // coursesNum list is ordered as in 'Courses.txt'
 	private Map<String,List<String>> courseToStudentsMap; // student list is ordered alphabetically
-	private final Object lockA = new Object();
+	private static final Object lockA = new Object();
 
 	public boolean isCourse(String courseNum) {
 		return courses.containsKey(courseNum);
@@ -156,7 +156,9 @@ public class Database {
 	}
 
 	public boolean isRegistered(String username) {//should check both admins and students
-		return users.containsKey(username);
+		synchronized (lockA) { //TODO leave it synchronized?
+			return users.containsKey(username);
+		}
 	}
 
 	public boolean isValidUser(String username, String password) {

@@ -9,7 +9,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class BGRS_EncoderDecoder implements MessageEncoderDecoder<Operation> {
-    private final ByteBuffer operationBuffer = ByteBuffer.allocate(2);
+    private final byte[] operationBuffer = new byte[2];
+    private int operationIndex = 0;
     private Operation operation = null;
     private HashMap<Short, String> opcodes = new HashMap<Short, String>() {{
         put((short) 1,"ADMINREG");
@@ -34,10 +35,11 @@ public class BGRS_EncoderDecoder implements MessageEncoderDecoder<Operation> {
     @Override
     public Operation decodeNextByte(byte nextByte) {
         if (operation == null) { //indicates that we are still reading the op code
-            operationBuffer.put(nextByte); //TODO reconsider using Bytes to shorts
-            if (!operationBuffer.hasRemaining()) { //we read 2 bytes and therefore can construct the appropriate operation
-                operationBuffer.flip();//TODO is necessary?
-                opcode = operationBuffer.getShort();
+            operationBuffer[operationIndex] = nextByte; //TODO reconsider using Bytes to shorts
+            operationIndex++;
+            if (operationIndex == operationBuffer.length) { //we read 2 bytes and therefore can construct the appropriate operation
+                operationIndex = 0;
+                opcode = bytesToShort(operationBuffer);
                 String op = opcodes.get(opcode);
                 switch (opcode){
                     case 1 : case 2 : case 3 :
@@ -62,7 +64,6 @@ public class BGRS_EncoderDecoder implements MessageEncoderDecoder<Operation> {
 
                         break;
                 }
-                operationBuffer.clear();
             }
         }
         else {
