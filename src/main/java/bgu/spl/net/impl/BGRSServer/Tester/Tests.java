@@ -612,13 +612,13 @@ public class Tests implements Runnable {
         int numKdam = 0;
         for(Course s : courses)
             numKdam += s.getNumCourseKdam();
-        return numKdam > 0;
+        return numKdam > 5;
     }
     public void generateCourses(){
         try {
             ArrayList<Course> nonShuffledCourseList;
 
-            final int numCoursesToGenerate = 7;
+            final int numCoursesToGenerate = 20;
             for (int i = 0; i < numCoursesToGenerate; i++) {
                 int generatedCourseNum = ((int) (Math.random() * 100) + 1);
                 String courseName = UUID.randomUUID().toString().substring(0, 8);
@@ -629,7 +629,7 @@ public class Tests implements Runnable {
 
             for (Course value : nonShuffledCourseList) {
                 do {
-                    int addKdamCoinToss = ((int) (Math.random() * 5) + 1);
+                    int addKdamCoinToss = ((int) (Math.random() * 14) + 1);
                     if (addKdamCoinToss > 2) {
                         Collections.shuffle(courses);
                         Course tempCourse = courses.get(0);

@@ -106,7 +106,7 @@ public class BGRS_EncoderDecoder implements MessageEncoderDecoder<Operation> {
             out[i + 4] = info[i];
         }
         out[info.length+4] = '\0';
-        System.out.println("sent: " + Arrays.toString(out)); //todo delete
+        //System.out.println("sent: " + Arrays.toString(out)); //todo delete
         return out;
     }
 
@@ -140,7 +140,7 @@ public class BGRS_EncoderDecoder implements MessageEncoderDecoder<Operation> {
                 break;
         }
         len = 0;
-        System.out.println(result); //todo delete
+        //System.out.println(result); //todo delete
         return result;
     }
 
