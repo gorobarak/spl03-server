@@ -4,17 +4,23 @@ import bgu.spl.net.impl.BGRS.Operation;
 
 public class ACK_ERROR implements Operation {
     private String operationType;
-    private String SubjectOpCode;
+    private short SubjectOpCode;
     private String info;
+    private short shortCode;
 
-    public ACK_ERROR(boolean isAck, String subjectOpCode, String info) {
+    public ACK_ERROR(boolean isAck, short subjectOpCode, String info) {
         this.operationType = (isAck) ? "12" : "13";
         this.SubjectOpCode = subjectOpCode;
         this.info = info;
+        this.shortCode = (short) ((isAck) ? 12 : 13);
     }
 
     public String OperationType() {
         return operationType;
+    }
+
+    public short getShortCode() {
+        return shortCode;
     }
 
     public void setOperationType(String operationType) {
@@ -25,11 +31,11 @@ public class ACK_ERROR implements Operation {
         this.info = info;
     }
 
-    public void setSubjectOpCode(String subjectOpCode) {
+    public void setSubjectOpCode(short subjectOpCode) {
         SubjectOpCode = subjectOpCode;
     }
 
-    public String getSubjectOpCode() {
+    public short getSubjectOpCode() {
         return SubjectOpCode;
     }
 

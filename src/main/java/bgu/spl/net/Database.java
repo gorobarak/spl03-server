@@ -176,6 +176,8 @@ public class Database {
 	 * @return  a list of all the kdams ordered according to the order in Courses.txt
 	 */
 	public String kdam(String courseNum) {
+		if (!courses.containsKey(courseNum))
+			return null;
 		return courses.get(courseNum).getKdams().toString().replace(" ",""); //removes spaces
 	}
 

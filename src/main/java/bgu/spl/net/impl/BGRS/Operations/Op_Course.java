@@ -29,4 +29,12 @@ public class Op_Course implements Operation {
     public void setCourse(String course) {
         this.course = course;
     }
+
+    @Override
+    public String toString() {
+        return "Op_Course{" +
+                "operationType='" + operationType + '\'' +
+                ", course='" + course + '\'' +
+                '}';
+    }
 }

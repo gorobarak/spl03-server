@@ -1,5 +1,6 @@
 package bgu.spl.net.impl.BGRS;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,6 +14,7 @@ public class userData {
     public userData(String password, boolean isAdmin){
         this.password = password;
         this.isAdmin = isAdmin;
+        courses = new ArrayList<>();
 
     }
 

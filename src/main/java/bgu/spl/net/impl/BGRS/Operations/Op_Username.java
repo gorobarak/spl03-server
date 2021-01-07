@@ -30,4 +30,12 @@ public class Op_Username implements Operation {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    @Override
+    public String toString() {
+        return "Op_Username{" +
+                "operationType='" + operationType + '\'' +
+                ", username='" + username + '\'' +
+                '}';
+    }
 }

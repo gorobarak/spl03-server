@@ -19,4 +19,11 @@ public class Op implements Operation {
     public void setOperationType(String operationType) {
         this.operationType = operationType;
     }
+
+    @Override
+    public String toString() {
+        return "Op{" +
+                "operationType='" + operationType + '\'' +
+                '}';
+    }
 }

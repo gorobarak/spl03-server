@@ -64,9 +64,9 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
         String username = ((Op_Username_Password)msg).getUsername();
         String password = ((Op_Username_Password)msg).getPassword();
         if (loginState || database.isRegistered(username) || !database.registerAdmin(username, password)) {
-            return new ACK_ERROR(false, "1", "");
+            return new ACK_ERROR(false, (short) 1, "");
         }
-        return new ACK_ERROR(true, "1", "");
+        return new ACK_ERROR(true, (short) 1, "");
     }
 
     //TODO can a username and an admin share same details
@@ -81,9 +81,9 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
         String username = ((Op_Username_Password)msg).getUsername();
         String password = ((Op_Username_Password)msg).getPassword();
         if (loginState || database.isRegistered(username) || !database.registerStudent(username, password)) {
-            return new ACK_ERROR(false, "2", "");
+            return new ACK_ERROR(false, (short) 2, "");
         }
-        return new ACK_ERROR(true, "2", "");
+        return new ACK_ERROR(true, (short) 2, "");
     }
 
     /**
@@ -101,13 +101,13 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
          username = ((Op_Username_Password)msg).getUsername();
          String password = ((Op_Username_Password)msg).getPassword();
          if (loginState || !database.isValidUser(username, password) || database.isLoggedIn(username) || !database.login(username, password)) {
-             return new ACK_ERROR(false, "3", "");
+             return new ACK_ERROR(false, (short) 3, "");
          }
          loginState = true;
          if (database.isAdmin(username)) {
              isAdmin = true;
          }
-         return new ACK_ERROR(true, "3", "");
+         return new ACK_ERROR(true, (short) 3, "");
      }
 
     /**
@@ -119,13 +119,13 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
      */
     private Operation logout(Operation msg) {
         if (!loginState) {
-            return new ACK_ERROR(false, "4", "");
+            return new ACK_ERROR(false, (short) 4, "");
         }
         loginState = false;
         isAdmin = false;
         database.logout(username);
         shouldTerminate = true;
-        return new ACK_ERROR(true, "4", "");
+        return new ACK_ERROR(true, (short) 4, "");
     }
 
     /**
@@ -140,22 +140,27 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
     private Operation coursereg(Operation msg) {
         String courseNum = ((Op_Course)msg).getCourse();
         if (!loginState || isAdmin || !database.registerToCourse(courseNum, username)) {
-            return new ACK_ERROR(false, "5", "");
+            return new ACK_ERROR(false, (short) 5, "");
         }
-        return new ACK_ERROR(true, "5", "");
+        return new ACK_ERROR(true, (short) 5, "");
 
     }
 
     /**
      * opcode 6
      * errors:
-     * //TODO should we check if the user is logged in?
+     * not logged in
+     * course doesnt exist
+     * user is admin
      * @param msg
      * @return
      */
     private Operation kdamcheck(Operation msg) {
         String courseNum = ((Op_Course)msg).getCourse();
-        return new ACK_ERROR(true,"6",database.kdam(courseNum));
+        if (!loginState || database.kdam(courseNum) == null || isAdmin){
+            return new ACK_ERROR(false, (short) 6,"");
+        }
+        return new ACK_ERROR(true,(short) 6,database.kdam(courseNum));
     }
 
     /**
@@ -166,10 +171,10 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
      */
     private Operation coursestat(Operation msg) {
         String courseNum = ((Op_Course)msg).getCourse();
-        if (!loginState || !isAdmin || !database.isCourse(courseNum)) {
-            return new ACK_ERROR(false, "7", "");
+        if (!isAdmin || !database.isCourse(courseNum)) {//!isAdmin also checks not logged in
+            return new ACK_ERROR(false, (short) 7, "");
         }
-        return new ACK_ERROR(true, "7", database.getCourseStat(courseNum));
+        return new ACK_ERROR(true, (short) 7, database.getCourseStat(courseNum));
     }
 
     /**
@@ -181,10 +186,12 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
      */
     private Operation studentstat(Operation msg) {
         String studentName = ((Op_Username)msg).getUsername();
-        if (!isAdmin || !database.isRegistered(studentName)) {
-            return new ACK_ERROR(false, "8", "");
+        System.out.println("isAdmin = " + isAdmin);
+        System.out.println("isRegistered = " + database.isRegistered(studentName));
+        if (!isAdmin || !database.isRegistered(studentName)) { //!isAdmin also checks not logged in
+            return new ACK_ERROR(false, (short) 8, "");
         }
-        return new ACK_ERROR(true, "8", database.getStudentStat(studentName));
+        return new ACK_ERROR(true, (short) 8, database.getStudentStat(studentName));
     }
 
     /**
@@ -197,9 +204,9 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
     private Operation isregistered(Operation msg) {
         String courseNum = ((Op_Course)msg).getCourse();
         if (!loginState || isAdmin) {
-            return new ACK_ERROR(false, "9", "");
+            return new ACK_ERROR(false, (short) 9, "");
         }
-        return new ACK_ERROR(true, "9", database.isRegisteredToCourse(courseNum, username));
+        return new ACK_ERROR(true, (short) 9, database.isRegisteredToCourse(courseNum, username));
     }
 
     /**
@@ -212,11 +219,11 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
     private Operation unregister(Operation msg) {
         String courseNum = ((Op_Course)msg).getCourse();
         if (!loginState || isAdmin || database.isRegisteredToCourse(courseNum, username).equals("NOT REGISTERED")) {
-            return new ACK_ERROR(false, "10", "");
+            return new ACK_ERROR(false, (short) 10, "");
         }
         //TODO can the unregister be unsuccessful?
         database.unregisterFromCourse(courseNum, username);
-        return new ACK_ERROR(true, "10", "");
+        return new ACK_ERROR(true, (short) 10, "");
 
     }
 
@@ -229,8 +236,8 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
      */
     private Operation mycourses(Operation msg) {
         if (!loginState || isAdmin) {
-            return new ACK_ERROR(false, "11", "");
+            return new ACK_ERROR(false, (short) 11, "");
         }
-        return new ACK_ERROR(true, "11", database.getMyCourses(username));
+        return new ACK_ERROR(true, (short) 11, database.getMyCourses(username));
     }
 }

@@ -39,4 +39,13 @@ public class Op_Username_Password implements Operation {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    @Override
+    public String toString() {
+        return "Op_Username_Password{" +
+                "operationType='" + operationType + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

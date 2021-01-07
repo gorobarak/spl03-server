@@ -9,7 +9,7 @@ public class ServerMain {
     public static void main(String[] args){
         Server.reactor(
                 Runtime.getRuntime().availableProcessors(),
-                7777, //port
+                808, //port
                 () ->  new BGRS_Protocol() , //protocol factory
                 () -> new BGRS_EncoderDecoder() //message encoder decoder factory
         ).serve();
