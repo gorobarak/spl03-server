@@ -140,9 +140,6 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
      */
     private Operation coursereg(Operation msg) {
         String courseNum = ((Op_Course)msg).getCourse();
-        System.out.println("loginState = " + loginState);//todo delete
-        System.out.println("isAdmin = " + isAdmin);
-        System.out.println("isCourse = " + database.isCourse(courseNum));
         if (!loginState || isAdmin || !database.isCourse(courseNum) || !database.registerToCourse(courseNum, username)) {
             return new ACK_ERROR(false, (short) 5, "");
         }

@@ -673,7 +673,7 @@ public class Tests implements Runnable {
             testAnswers.add(testKdamCheck());
             testAnswers.add(testMyCourses());
             testAnswers.add(testStudentStat());
-            testAnswers.add(testCourseStat());
+             testAnswers.add(testCourseStat());
 
             System.out.println("\r\n\r\n----------------------------------");
             for (String testAnswer : testAnswers) System.out.println(testAnswer);

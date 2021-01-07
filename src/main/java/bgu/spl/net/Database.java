@@ -156,9 +156,9 @@ public class Database {
 	}
 
 	public boolean isRegistered(String username) {//should check both admins and students
-		synchronized (lockA) { //TODO leave it synchronized?
+//		synchronized (lockA) { //TODO leave it synchronized?
 			return users.containsKey(username);
-		}
+//		}
 	}
 
 	public boolean isValidUser(String username, String password) {
@@ -198,7 +198,7 @@ public class Database {
 			courseData c = courses.get(courseNum);
 			return ("Course: (" + courseNum + ") " + c.getCourseName() + "\n" +
 					"Seats Available: " + c.getAvailableSlots() + "/" + c.getMaxSlots() + "\n" +
-					"Students registered: " + courseToStudentsMap.get(courseNum).toString());
+					"Students Registered: " + courseToStudentsMap.get(courseNum).toString().replace(" ",""));
 		}
 
 	}
@@ -212,18 +212,15 @@ public class Database {
 		synchronized (users.get(studentName)) {
 			userData u = users.get(studentName);
 			return ("Student: " + studentName + "\n" +
-					"Courses: " + u.getCourses().toString());//TODO remove spaces?
+					"Courses: " + u.getCourses().toString().replace(" ", ""));
 		}
 	}
 
 	private boolean hasKdams(String courseNum, String username) {
 		userData user = users.get(username);
 		courseData course = courses.get(courseNum);
-		System.out.println("kdams = " + course.getKdams()); //todo delete
-		System.out.println("kdamsSize " + course.getKdams().size());
 		for (String kdam : course.getKdams()) {
 			if (!user.getCourses().contains(kdam)) {
-				System.out.println(kdam); //todo delete
 				return false;
 			}
 		}
@@ -247,9 +244,6 @@ public class Database {
 			synchronized (courses.get(courseNum)) {
 				userData user = users.get(username);
 				courseData course = courses.get(courseNum);
-				System.out.println("alreadyRegistered = " + user.getCourses().contains(courseNum)); //todo delete
-				System.out.println("availableSlots = " + course.getAvailableSlots());
-				System.out.println("hasKdmas = " + hasKdams(courseNum,username));
 				if (user.getCourses().contains(courseNum) || course.getAvailableSlots() == 0 || !hasKdams(courseNum,username)) {
 					return false;
 				}//else register student to course:
