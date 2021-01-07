@@ -1,11 +1,11 @@
-package bgu.spl.net.impl.BGRS;
+package bgu.spl.net.impl.BGRSServer;
 
 import bgu.spl.net.Database;
 import bgu.spl.net.api.MessagingProtocol;
-import bgu.spl.net.impl.BGRS.Operations.ACK_ERROR;
-import bgu.spl.net.impl.BGRS.Operations.Op_Course;
-import bgu.spl.net.impl.BGRS.Operations.Op_Username;
-import bgu.spl.net.impl.BGRS.Operations.Op_Username_Password;
+import bgu.spl.net.impl.BGRSServer.Operations.ACK_ERROR;
+import bgu.spl.net.impl.BGRSServer.Operations.Op_Course;
+import bgu.spl.net.impl.BGRSServer.Operations.Op_Username;
+import bgu.spl.net.impl.BGRSServer.Operations.Op_Username_Password;
 
 public class BGRS_Protocol implements MessagingProtocol<Operation> {
     boolean loginState = false;

@@ -1,7 +1,7 @@
 package bgu.spl.net;
 
-import bgu.spl.net.impl.BGRS.courseData;
-import bgu.spl.net.impl.BGRS.userData;
+import bgu.spl.net.impl.BGRSServer.courseData;
+import bgu.spl.net.impl.BGRSServer.userData;
 
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;// Import this class to handle errors

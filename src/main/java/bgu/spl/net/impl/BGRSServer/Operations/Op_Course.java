@@ -1,6 +1,6 @@
-package bgu.spl.net.impl.BGRS.Operations;
+package bgu.spl.net.impl.BGRSServer.Operations;
 
-import bgu.spl.net.impl.BGRS.Operation;
+import bgu.spl.net.impl.BGRSServer.Operation;
 
 public class Op_Course implements Operation {
     private String operationType;

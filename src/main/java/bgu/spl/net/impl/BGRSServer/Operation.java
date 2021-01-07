@@ -1,4 +1,4 @@
-package bgu.spl.net.impl.BGRS;
+package bgu.spl.net.impl.BGRSServer;
 
 public interface Operation {
     /**

@@ -1,7 +1,7 @@
-package bgu.spl.net.impl.BGRS;
+package bgu.spl.net.impl.BGRSServer;
 
 import bgu.spl.net.api.MessageEncoderDecoder;
-import bgu.spl.net.impl.BGRS.Operations.*;
+import bgu.spl.net.impl.BGRSServer.Operations.*;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
