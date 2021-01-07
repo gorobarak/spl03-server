@@ -54,7 +54,7 @@ public class Database {
 	 * Retrieves the single instance of this class.
 	 */
 	public static Database getInstance() {
-		System.out.println("getInstance()"); //TODO delete
+		//System.out.println("getInstance()"); //TODO delete
 		return InstanceHolder.instance;
 	}
 
@@ -120,9 +120,9 @@ public class Database {
 	 * @return true iff successful
 	 */
 	public boolean registerStudent(String username, String password) {
-		System.out.println("outside registerStudent()");
+		//out.println("outside registerStudent()");
 		synchronized (lockA) {
-			System.out.println("registerStudent()"); //TODO delete
+			//System.out.println("registerStudent()"); //TODO delete
 			if (!isRegistered(username)) {
 				userData u = new userData(password, false);
 				users.put(username, u);

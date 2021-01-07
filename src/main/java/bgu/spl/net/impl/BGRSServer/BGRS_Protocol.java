@@ -139,7 +139,7 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
      */
     private Operation coursereg(Operation msg) {
         String courseNum = ((Op_Course)msg).getCourse();
-        if (!loginState || isAdmin || !database.registerToCourse(courseNum, username)) {
+        if (!loginState || isAdmin || !database.isCourse(courseNum) || !database.registerToCourse(courseNum, username)) {
             return new ACK_ERROR(false, (short) 5, "");
         }
         return new ACK_ERROR(true, (short) 5, "");
@@ -186,8 +186,8 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
      */
     private Operation studentstat(Operation msg) {
         String studentName = ((Op_Username)msg).getUsername();
-        System.out.println("isAdmin = " + isAdmin);
-        System.out.println("isRegistered = " + database.isRegistered(studentName));
+        //System.out.println("isAdmin = " + isAdmin);
+        //System.out.println("isRegistered = " + database.isRegistered(studentName));
         if (!isAdmin || !database.isRegistered(studentName)) { //!isAdmin also checks not logged in
             return new ACK_ERROR(false, (short) 8, "");
         }
