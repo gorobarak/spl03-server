@@ -98,11 +98,15 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
      * @return answer
      */
      private Operation login(Operation msg){
-         username = ((Op_Username_Password)msg).getUsername();
+         String clientUsername = ((Op_Username_Password)msg).getUsername();
          String password = ((Op_Username_Password)msg).getPassword();
-         if (loginState || !database.isValidUser(username, password) || database.isLoggedIn(username) || !database.login(username, password)) {
+//         System.out.println("user that is trying to login: " + username);
+//         System.out.println("current login state: " + loginState);
+//         if (loginState) System.out.println("logged in user: " + username);
+         if (loginState || !database.isValidUser(clientUsername, password) || database.isLoggedIn(clientUsername) || !database.login(clientUsername, password)) {
              return new ACK_ERROR(false, (short) 3, "");
          }
+         username = clientUsername;
          loginState = true;
          if (database.isAdmin(username)) {
              isAdmin = true;
@@ -231,11 +235,14 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
     /**
      * opcode 11
      * errors: not logged in, is admin,
-     * otherwise: register user
+     * otherwise:
      * @param msg
      * @return
      */
     private Operation mycourses(Operation msg) {
+//        System.out.println("user: " + username);
+//        System.out.println("logged in: " + loginState + ", is admin: " + isAdmin);
+//        System.out.println("------");
         if (!loginState || isAdmin) {
             return new ACK_ERROR(false, (short) 11, "");
         }

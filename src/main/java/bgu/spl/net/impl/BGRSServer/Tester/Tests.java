@@ -612,7 +612,7 @@ public class Tests implements Runnable {
         int numKdam = 0;
         for(Course s : courses)
             numKdam += s.getNumCourseKdam();
-        return numKdam > 5;
+        return numKdam > 0;
     }
     public void generateCourses(){
         try {
