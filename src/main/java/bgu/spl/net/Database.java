@@ -20,7 +20,6 @@ public class Database {
 	private List<String> order;//courses order
 	private Map<String,courseData> courses ; // courseNum - courseData
 	private Map<String,userData> users; // username - userData
-	//private Map<String, List<String>> studentToCoursesMap; // coursesNum list is ordered as in 'Courses.txt'
 	private Map<String,List<String>> courseToStudentsMap; // student list is ordered alphabetically
 	private static final Object lockA = new Object();
 
@@ -46,7 +45,7 @@ public class Database {
 
 	private void sortKdams() {
 			for (Map.Entry<String, courseData> e : courses.entrySet()){
-				e.getValue().getKdams().sort((a,b)->{ return order.indexOf(a)-order.indexOf(b); }); //TODO: validate
+				e.getValue().getKdams().sort((a,b)->{ return order.indexOf(a)-order.indexOf(b); });
 			}
 	}
 
@@ -54,7 +53,6 @@ public class Database {
 	 * Retrieves the single instance of this class.
 	 */
 	public static Database getInstance() {
-		//System.out.println("getInstance()"); //TODO delete
 		return InstanceHolder.instance;
 	}
 
@@ -125,9 +123,7 @@ public class Database {
 	 * @return true iff successful
 	 */
 	public boolean registerStudent(String username, String password) {
-		//out.println("outside registerStudent()");
 		synchronized (lockA) {
-			//System.out.println("registerStudent()"); //TODO delete
 			if (!isRegistered(username)) {
 				userData u = new userData(password, false);
 				users.put(username, u);
@@ -156,9 +152,7 @@ public class Database {
 	}
 
 	public boolean isRegistered(String username) {//should check both admins and students
-//		synchronized (lockA) { //TODO leave it synchronized?
-			return users.containsKey(username);
-//		}
+		return users.containsKey(username);
 	}
 
 	public boolean isValidUser(String username, String password) {
@@ -231,7 +225,6 @@ public class Database {
 
 	/**
 	 * Synchronized B - reading data that isn't fully changed
-	 * doesn't have to be synchronised because it's guarantied that only one client is logged in to a user TODO validate that statement
 	 * errors:
 	 * already registered to the course
 	 * no available slots
@@ -272,7 +265,6 @@ public class Database {
 				user.getCourses().remove(courseNum);//remove the course from the student's courses
 				course.removeStudent(); //increase available slots
 				courseToStudentsMap.get(courseNum).remove(username); //remove the student from the list of registered students
-				//TODO is sort kept?
 			}
 		}
 	}

@@ -7,7 +7,7 @@ public class courseData {
     private int maxSlots;
     private String courseNum;
     private String courseName;
-    private List<String> kdams; //courseNums ordered in the same order as they appear in Courses.txt TODO: when printing make in the desired format
+    private List<String> kdams; //courseNums ordered in the same order as they appear in Courses.txt
 
     public courseData(int availableSlots,int maxSlots,String courseNum,String courseName,List<String> kdams){
         this.availableSlots = availableSlots;

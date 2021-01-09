@@ -52,7 +52,6 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
 
 
 
-    //TODO can we register from a logged in account - NO
     /**
      * opcode 1
      * errors: already logged in, already registered,
@@ -69,7 +68,6 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
         return new ACK_ERROR(true, (short) 1, "");
     }
 
-    //TODO can a username and an admin share same details
     /**
      * opcode 2
      * errors: already logged in, already registered,
@@ -193,7 +191,7 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
         String studentName = ((Op_Username)msg).getUsername();
         //System.out.println("isAdmin = " + isAdmin);
         //System.out.println("isRegistered = " + database.isRegistered(studentName));
-        if (!isAdmin || !database.isRegistered(studentName)) { //!isAdmin also checks not logged in
+        if (!isAdmin || !database.isRegistered(studentName) || database.isAdmin(studentName)) { //!isAdmin also checks not logged in
             return new ACK_ERROR(false, (short) 8, "");
         }
         return new ACK_ERROR(true, (short) 8, database.getStudentStat(studentName));
@@ -208,7 +206,7 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
      */
     private Operation isregistered(Operation msg) {
         String courseNum = ((Op_Course)msg).getCourse();
-        if (!loginState || isAdmin) {
+        if (!loginState || isAdmin || !database.isCourse(courseNum)) {
             return new ACK_ERROR(false, (short) 9, "");
         }
         return new ACK_ERROR(true, (short) 9, database.isRegisteredToCourse(courseNum, username));
@@ -226,7 +224,6 @@ public class BGRS_Protocol implements MessagingProtocol<Operation> {
         if (!loginState || isAdmin || database.isRegisteredToCourse(courseNum, username).equals("NOT REGISTERED")) {
             return new ACK_ERROR(false, (short) 10, "");
         }
-        //TODO can the unregister be unsuccessful?
         database.unregisterFromCourse(courseNum, username);
         return new ACK_ERROR(true, (short) 10, "");
 

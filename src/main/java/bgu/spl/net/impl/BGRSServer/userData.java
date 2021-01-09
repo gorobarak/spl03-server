@@ -8,7 +8,7 @@ public class userData {
     private String password;
     private boolean isAdmin;
     private boolean isLoggedIn = false;
-    private List<String> courses; //TODO should it be ordered as was in courses.txt? - YES
+    private List<String> courses;//ordered as in txt
 
 
     public userData(String password, boolean isAdmin){

@@ -35,7 +35,7 @@ public class BGRS_EncoderDecoder implements MessageEncoderDecoder<Operation> {
     @Override
     public Operation decodeNextByte(byte nextByte) {
         if (operation == null) { //indicates that we are still reading the op code
-            operationBuffer[operationIndex] = nextByte; //TODO reconsider using Bytes to shorts
+            operationBuffer[operationIndex] = nextByte;
             operationIndex++;
             if (operationIndex == operationBuffer.length) { //we read 2 bytes and therefore can construct the appropriate operation
                 operationIndex = 0;
@@ -87,13 +87,10 @@ public class BGRS_EncoderDecoder implements MessageEncoderDecoder<Operation> {
 
     @Override
     public byte[] encode(Operation message) {
-        //TODO should it first encode and then concatenate?
         byte[] code = shortToBytes(((ACK_ERROR) message).getShortCode());
         byte[] subjectCode = shortToBytes(((ACK_ERROR) message).getSubjectOpCode());
         byte[] info = ((ACK_ERROR) message).getInfo().getBytes();//UTF-8 by default
         return setMessage(code, subjectCode, info);
-
-        //return (message.OperationType() + ((ACK_ERROR) message).getSubjectOpCode() + ((ACK_ERROR) message).getInfo() + "\0").getBytes(); //uses UTF-8 by default
     }
 
     private byte[] setMessage(byte[] code, byte[] subjectCode, byte[] info) {
@@ -106,7 +103,6 @@ public class BGRS_EncoderDecoder implements MessageEncoderDecoder<Operation> {
             out[i + 4] = info[i];
         }
         out[info.length+4] = '\0';
-        //System.out.println("sent: " + Arrays.toString(out)); //todo delete
         return out;
     }
 
@@ -124,7 +120,7 @@ public class BGRS_EncoderDecoder implements MessageEncoderDecoder<Operation> {
             case 1 : case 2 : case 3 :
                 result = new Op_Username_Password((Op_Username_Password) operation);
                 int delimiter = find0();
-                ((Op_Username_Password)result).setUsername(new String(buffer, 0, delimiter, StandardCharsets.UTF_8)); //TODO check delimiters
+                ((Op_Username_Password)result).setUsername(new String(buffer, 0, delimiter, StandardCharsets.UTF_8));
                 ((Op_Username_Password)result).setPassword(new String(buffer, delimiter+1,len-delimiter-2 , StandardCharsets.UTF_8));
                 break;
             case 4 : case 11 :
@@ -140,7 +136,6 @@ public class BGRS_EncoderDecoder implements MessageEncoderDecoder<Operation> {
                 break;
         }
         len = 0;
-        //System.out.println(result); //todo delete
         return result;
     }
 
